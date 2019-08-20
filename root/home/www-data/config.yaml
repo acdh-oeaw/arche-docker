@@ -1,11 +1,11 @@
 dbConnStr:
     # admin connection should grant full data modification rights
-    admin: "pgsql: user=user"
+    admin: "pgsql: "
     # guest connection should be read-only
-    guest: "pgsql: user=user"
+    guest: "pgsql: "
 storage: 
-    dir: /home/user/data
-    tmpDir: /home/user/tmp
+    dir: /home/www-data/data
+    tmpDir: /home/www-data/tmp
     # number of binary resources directory storage levels
     # each level corresponds to a two-digit part of the resource id counting from right, e.g.:
     # - id = 1234567 and level = 1 stores a binary in  {dir}/67/1234567
@@ -18,7 +18,7 @@ storage:
     hashAlgorithm: sha1
 rest:
     logging:
-        file: /home/user/log/rest.log
+        file: /home/www-data/log/rest.log
         # debug/info/notice/warning/error/critical/alert/emergency
         level: debug
     urlBase: http://127.0.0.1
@@ -124,13 +124,13 @@ transactionController:
         # unix/inet
         type: unix
         # only for the unix type
-        path: /home/user/txSocket
+        path: /home/www-data/txSocket
         # only for the inet type
         address: ''
         # only for the inet type
         port: 0
     logging:
-        file: /home/user/log/tx.log
+        file: /home/www-data/log/tx.log
         # debug/info/notice/warning/error/critical/alert/emergency
         level: debug
     # transaction state check interval in ms

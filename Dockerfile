@@ -5,33 +5,24 @@ RUN apt update && \
     apt install -y locales
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en
 RUN locale-gen en_US.UTF-8 && \
-    apt install -y supervisor git apache2 apache2-utils libapache2-mpm-itk links curl vim locales libapache2-mod-php php-cli php-pgsql php-zip php-recode php-readline php-json php-curl php-intl php-mbstring php-yaml composer openjdk-8-jre-headless postgresql && \
-    useradd -m user && \
+    apt install -y supervisor git apache2 apache2-utils links curl vim locales libapache2-mod-php php-cli php-pgsql php-zip php-recode php-readline php-json php-curl php-intl php-mbstring php-yaml composer openjdk-8-jre-headless postgresql && \
     a2enmod rewrite && \
-    a2enmod headers && \
-    a2enmod proxy && \
-    a2enmod proxy_http && \
     sed -i -e 's/StartServers.*/StartServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
-    sed -i -e 's/MinSpareServers.*/MinSpareServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf &&\
-    mkdir /home/user/tika && \
-    curl http://mirror.klaus-uwe.me/apache/tika/tika-server-1.22.jar > /home/user/tika/tika-server.jar
-CMD ["/usr/bin/supervisord"]
-EXPOSE 80
-USER user
-WORKDIR /home/user
-RUN git clone https://github.com/zozlak/acdh-repo.git /home/user/acdh-repo  && \
-    cd /home/user/acdh-repo && \
-    composer update && \
-    ln -s /home/user/config.yaml /home/user/acdh-repo/config.yaml
-USER postgres
-RUN /usr/bin/pg_ctlcluster 10 main start -- -D /var/lib/postgresql/10/main -l /var/log/postgresql/postgresql-10-main.log && \
-    createuser user && \
-    createdb -O user user && \
-    /usr/bin/pg_ctlcluster 10 main stop
-USER root
+    sed -i -e 's/MinSpareServers.*/MinSpareServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
+    sed -i -e 's/Listen 80/Listen 8080/g' /etc/apache2/ports.conf && \
+    sed -i -e 's|APACHE_LOG_DIR=.*|APACHE_LOG_DIR=/home/www-data/log|g' /etc/apache2/envvars && \
+    mkdir -p /home/www-data/tika && \
+    curl http://mirror.klaus-uwe.me/apache/tika/tika-server-1.22.jar > /home/www-data/tika/tika-server.jar
+CMD ["/home/www-data/run.sh"]
 COPY /root /
-RUN chown -R user:user /home/user
-VOLUME /var/lib/postgresql
-VOLUME /home/user/data
-VOLUME /home/user/tmp
-VOLUME /home/user/log
+EXPOSE 8080
+RUN mkdir -p /home/www-data/data /home/www-data/log /home/www-data/tmp /home/www-data/postgresql /home/www-data/acdh-repo/vendor && \
+    chown -R www-data:www-data /home/www-data && \
+    chmod 700 /home/www-data && \
+    usermod -d /home/www-data www-data
+VOLUME /home/www-data/data
+VOLUME /home/www-data/tmp
+VOLUME /home/www-data/log
+VOLUME /home/www-data/postgresql
+VOLUME /home/www-data/acdh-repo/vendor
+
