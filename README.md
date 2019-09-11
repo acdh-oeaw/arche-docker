@@ -52,10 +52,11 @@ A sample deployment putting all the persistent storage into the `shares` directo
 ]
 ```
 
-### Directory structure and the config.yaml
+### Directory structure and config files
 
 ```bash
-mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor
+mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker
+echo -e "FROM zozlak/acdh-repo\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
 curl https://raw.githubusercontent.com/zozlak/acdh-repo/master/config-sample.yaml > shares/config.yaml
 ```
 Adjust `shares/config.yaml` if needed
@@ -63,4 +64,4 @@ Adjust `shares/config.yaml` if needed
 
 ### Run
 
-`docker-tools`
+`docker-manage`
