@@ -57,7 +57,7 @@ A sample deployment putting all the persistent storage into the `shares` directo
 ```bash
 mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker
 echo -e "FROM zozlak/acdh-repo\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
-curl https://raw.githubusercontent.com/zozlak/acdh-repo/master/config-sample.yaml > shares/config.yaml
+curl https://github.com/zozlak/acdh-repo-docker/blob/master/root/home/www-data/config.yaml > shares/config.yaml
 ```
 Adjust `shares/config.yaml` if needed
 
