@@ -54,12 +54,14 @@ A sample deployment putting all the persistent storage into the `shares` directo
 
 ### Directory structure and config files
 
+(adjust the last line so `test.localhost` matches the `SeverName` set int the `config.json`)
+
 ```bash
 mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker
 echo -e "FROM zozlak/acdh-repo\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
-curl https://github.com/zozlak/acdh-repo-docker/blob/master/root/home/www-data/config.yaml > shares/config.yaml
+curl https://raw.githubusercontent.com/zozlak/acdh-repo-docker/master/root/home/www-data/config.yaml > shares/config.yaml
 ```
-Adjust `shares/config.yaml` if needed
+Adjust `shares/config.yaml`, especially set the `urlBase` to `https://ServerNameYouSetInTheConfig.json`.
 
 
 ### Run
