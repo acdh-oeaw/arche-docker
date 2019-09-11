@@ -26,10 +26,8 @@ Just mount it as *a volume* by adding `-v /path/to/config.yaml:/home/www-data/co
 
 A sample deployment putting all the persistent storage into the `shares` directory.
 
-### config.json
-
-(adjust `Name` and `ServerName`):
-
+1. Create config.json
+  (adjust `Name` and `ServerName`):
 ```json
 [
   {
@@ -51,19 +49,17 @@ A sample deployment putting all the persistent storage into the `shares` directo
   }
 ]
 ```
-
-### Directory structure and config files
-
-(adjust the last line so `test.localhost` matches the `SeverName` set int the `config.json`)
-
+2. Prepare directories for persistent storage
 ```bash
 mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker
+```
+3. Prepare the Dockerfile
+```bash
 echo -e "FROM zozlak/acdh-repo\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
+```
+4. Fetch sample repository config.yaml file
+```bash
 curl https://raw.githubusercontent.com/zozlak/acdh-repo-docker/master/root/home/www-data/config.yaml > shares/config.yaml
 ```
-Adjust `shares/config.yaml`, especially set the `urlBase` to `https://ServerNameYouSetInTheConfig.json`.
-
-
-### Run
-
-`docker-manage`
+5. Adjust the `shares/config.yaml` file, especially set the `urlBase` to `https://ServerNameYouSetInTheConfig.json`.
+6. Run `docker-manage`
