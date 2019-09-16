@@ -22,3 +22,44 @@ docker run --name acdh-repo -p 80:8080 -v $VOLUMES_DIR/data:/home/www-data/data 
 
 Just mount it as *a volume* by adding `-v /path/to/config.yaml:/home/www-data/config.yaml`
 
+## Deploying at ACDH
+
+A sample deployment putting all the persistent storage into the `shares` directory.
+
+1. Create config.json
+  (adjust `Name` and `ServerName`):
+```json
+[
+  {
+    "Type":"HTTP",
+    "Name":"test",
+    "DockerfileDir":"shares/docker",
+    "ServerName":"test.localhost",
+    "UserName":"www-data",
+    "GroupName":"www-data",
+    "Ports": {"Host":0, "Guest":8080, "Type":"HTTP"},
+    "Mounts": [
+      {"Host":"shares/data", "Guest":"/home/www-data/data", "Rights":"rw"},
+      {"Host":"shares/tmp", "Guest":"/home/www-data/tmp", "Rights":"rw"},
+      {"Host":"shares/postgresql", "Guest":"/home/www-data/postgresql", "Rights":"rw"},
+      {"Host":"shares/log", "Guest":"/home/www-data/log", "Rights":"rw"},
+      {"Host":"shares/vendor", "Guest":"/home/www-data/acdh-repo/vendor", "Rights":"rw"},
+      {"Host":"shares/config.yaml", "Guest":"/home/www-data/config.yaml", "Rights":"rw"}
+    ]
+  }
+]
+```
+2. Prepare directories for persistent storage
+```bash
+mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker
+```
+3. Prepare the Dockerfile
+```bash
+echo -e "FROM zozlak/acdh-repo\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
+```
+4. Fetch sample repository config.yaml file
+```bash
+curl https://raw.githubusercontent.com/zozlak/acdh-repo-docker/master/root/home/www-data/config.yaml > shares/config.yaml
+```
+5. Adjust the `shares/config.yaml` file, especially set the `urlBase` to `https://ServerNameYouSetInTheConfig.json`.
+6. Run `docker-manage`
