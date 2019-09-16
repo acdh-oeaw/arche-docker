@@ -14,15 +14,15 @@ if [ ! -d /home/www-data/acdh-repo/.git ]; then
     su -l www-data -c 'ln -s /home/www-data/config.yaml /home/www-data/acdh-repo/config.yaml'
 fi
 if [ ! -f /home/www-data/postgresql/postgresql.conf ]; then
-    su -l www-data -c '/usr/lib/postgresql/10/bin/initdb -D /home/www-data/postgresql --auth=ident -U www-data'
-    su -l www-data -c '/usr/lib/postgresql/10/bin/pg_ctl start -D /home/www-data/postgresql -l /home/www-data/log/postgresql.log'
+    su -l www-data -c '/usr/lib/postgresql/11/bin/initdb -D /home/www-data/postgresql --auth=ident -U www-data'
+    su -l www-data -c '/usr/lib/postgresql/11/bin/pg_ctl start -D /home/www-data/postgresql -l /home/www-data/log/postgresql.log'
     su -l www-data -c '/usr/bin/createdb www-data'
     su -l www-data -c '/usr/bin/psql -f /home/www-data/acdh-repo/dbschema/db_schema.sql'
     su -l www-data -c '/usr/bin/createuser repo'
     su -l www-data -c '/usr/bin/createuser guest'
     su -l www-data -c 'echo "GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC TO guest; GRANT USAGE ON SCHEMA public TO guest" | /usr/bin/psql'
     su -l www-data -c 'echo "GRANT SELECT, INSERT, DELETE, UPDATE, TRUNCATE ON ALL TABLES IN SCHEMA PUBLIC TO repo; GRANT USAGE ON SCHEMA public TO repo" | /usr/bin/psql'
-    su -l www-data -c '/usr/lib/postgresql/10/bin/pg_ctl stop -D /home/www-data/postgresql'
+    su -l www-data -c '/usr/lib/postgresql/11/bin/pg_ctl stop -D /home/www-data/postgresql'
 fi
 su -l www-data -c 'cd /home/www-data/acdh-repo && composer update'
 su -l www-data -c '/usr/bin/supervisord -c /home/www-data/supervisord.conf'
