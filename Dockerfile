@@ -1,4 +1,4 @@
-from ubuntu:latest
+from ubuntu:disco
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     apt full-upgrade -y && \
