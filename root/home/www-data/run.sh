@@ -17,7 +17,7 @@ if [ ! -f /home/www-data/postgresql/postgresql.conf ]; then
     su -l www-data -c '/usr/lib/postgresql/11/bin/initdb -D /home/www-data/postgresql --auth=ident -U www-data'
     su -l www-data -c '/usr/lib/postgresql/11/bin/pg_ctl start -D /home/www-data/postgresql -l /home/www-data/log/postgresql.log'
     su -l www-data -c '/usr/bin/createdb www-data'
-    su -l www-data -c '/usr/bin/psql -f /home/www-data/acdh-repo/dbschema/db_schema.sql'
+    su -l www-data -c '/usr/bin/psql -f /home/www-data/acdh-repo/build/db_schema.sql'
     su -l www-data -c '/usr/bin/createuser repo'
     su -l www-data -c '/usr/bin/createuser guest'
     su -l www-data -c 'echo "GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC TO guest; GRANT USAGE ON SCHEMA public TO guest" | /usr/bin/psql'
