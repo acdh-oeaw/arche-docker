@@ -5,7 +5,7 @@ RUN apt update && \
     apt install -y locales
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en
 RUN locale-gen en_US.UTF-8 && \
-    apt install -y supervisor git apache2 apache2-utils links curl vim locales libapache2-mod-php php-cli php-pgsql php-zip php-recode php-readline php-json php-curl php-intl php-mbstring php-yaml composer openjdk-8-jre-headless postgresql && \
+    apt install -y supervisor git apache2 apache2-utils links curl vim locales libapache2-mod-php php-cli php-pgsql php-zip php-recode php-readline php-json php-curl php-intl php-mbstring php-yaml php-bcmath composer openjdk-8-jre-headless postgresql && \
     a2enmod rewrite && \
     sed -i -e 's/StartServers.*/StartServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
     sed -i -e 's/MinSpareServers.*/MinSpareServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
