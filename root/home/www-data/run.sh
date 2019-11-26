@@ -26,5 +26,5 @@ if [ ! -f /home/www-data/postgresql/postgresql.conf ]; then
 fi
 rm -f /home/www-data/postgresql/postmaster.pid
 
-su -l www-data -c '/usr/bin/supervisord -c /home/www-data/config/supervisord.conf'
+su -l www-data -c '/usr/bin/supervisord -c /home/www-data/supervisord.conf'
 
