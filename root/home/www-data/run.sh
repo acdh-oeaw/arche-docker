@@ -12,6 +12,10 @@ chown www-data:www-data /var/run/apache2 /var/run/postgresql
 
 su -l www-data -c 'cd /home/www-data/docroot && composer update'
 su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/index.php /home/www-data/docroot/index.php'
+if [ ! -L /home/www-data/docroot/config.yaml ]; then
+    su -l www-data -c 'ln -s /home/www-data/config/config.yaml /home/www-data/docroot/config.yaml'
+    su -l www-data -c 'ln -s /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/.htaccess /home/www-data/docroot/.htaccess'
+fi
 
 if [ ! -f /home/www-data/postgresql/postgresql.conf ]; then
     su -l www-data -c '/usr/lib/postgresql/11/bin/initdb -D /home/www-data/postgresql --auth=ident -U www-data --locale en_US.UTF-8'

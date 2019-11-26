@@ -18,8 +18,6 @@ COPY /root /
 EXPOSE 8080
 RUN mkdir -p /home/www-data/data /home/www-data/log /home/www-data/tmp /home/www-data/postgresql /home/www-data/docroot/vendor && \
     cd /home/www-data/docroot && \
-    ln -s ../config/config.yaml config.yaml && \
-    ln -s vendor/acdh-oeaw/acdh-repo/.htaccess .htaccess && \
     chown -R www-data:www-data /home/www-data && \
     chmod 700 /home/www-data && \
     usermod -d /home/www-data www-data
