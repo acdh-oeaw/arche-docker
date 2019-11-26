@@ -44,22 +44,21 @@ A sample deployment putting all the persistent storage into the `shares` directo
       {"Host":"shares/postgresql", "Guest":"/home/www-data/postgresql", "Rights":"rw"},
       {"Host":"shares/log", "Guest":"/home/www-data/log", "Rights":"rw"},
       {"Host":"shares/vendor", "Guest":"/home/www-data/acdh-repo/vendor", "Rights":"rw"},
-      {"Host":"shares/config.yaml", "Guest":"/home/www-data/config.yaml", "Rights":"rw"}
+      {"Host":"shares/config", "Guest":"/home/www-data/config", "Rights":"rw"}
     ]
   }
 ]
 ```
 2. Prepare directories for persistent storage
 ```bash
-mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker
+mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker shares/config
 ```
 3. Prepare the Dockerfile
 ```bash
 echo -e "FROM zozlak/acdh-repo\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
 ```
-4. Fetch sample repository config.yaml file
-```bash
-curl https://raw.githubusercontent.com/zozlak/acdh-repo-docker/master/root/home/www-data/config.yaml > shares/config.yaml
-```
-5. Adjust the `shares/config.yaml` file, especially set the `urlBase` to `https://ServerNameYouSetInTheConfig.json`.
-6. Run `docker-manage`
+5. Run `docker-manage`
+
+6. Adjust the `shares/config/config.yaml` (especially set the `urlBase` to `https://ServerNameYouSetInTheConfig.json`) and/or `shares/config/composer.json`.
+
+7. Run `docker-manage` again (so all the changes you made in the previous point take effect).
