@@ -16,13 +16,18 @@ RUN locale-gen en_US.UTF-8 && \
 CMD ["/home/www-data/run.sh"]
 COPY /root /
 EXPOSE 8080
-RUN mkdir -p /home/www-data/data /home/www-data/log /home/www-data/tmp /home/www-data/postgresql /home/www-data/acdh-repo/vendor && \
+RUN mkdir -p /home/www-data/data /home/www-data/log /home/www-data/tmp /home/www-data/postgresql /home/www-data/docroot/vendor && \
+    cd /home/www-data/docroot && \
+    ln -s ../config/config.yaml config.yaml && \
+    ln -s vendor/acdh-oeaw/acdh-repo/.htaccess .htaccess && \
     chown -R www-data:www-data /home/www-data && \
     chmod 700 /home/www-data && \
     usermod -d /home/www-data www-data
+WORKDIR /home/www-data
+VOLUME /home/www-data/config
 VOLUME /home/www-data/data
 VOLUME /home/www-data/tmp
 VOLUME /home/www-data/log
 VOLUME /home/www-data/postgresql
-VOLUME /home/www-data/acdh-repo/vendor
+VOLUME /home/www-data/docroot/vendor
 
