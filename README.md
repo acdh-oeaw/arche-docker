@@ -14,13 +14,13 @@ In this setup all the data are stored in a given host location and all the compo
 
 ```bash
 VOLUMES_DIR=/absolute/path/to/data/location
-mkdir $VOLUMES_DIR/data $VOLUMES_DIR/tmp $VOLUMES_DIR/postgresql $VOLUMES_DIR/log $VOLUMES_DIR/vendor
-docker run --name acdh-repo -p 80:8080 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/acdh-repo/vendor -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/acdh-repo
+mkdir -p $VOLUMES_DIR/data $VOLUMES_DIR/tmp $VOLUMES_DIR/postgresql $VOLUMES_DIR/log $VOLUMES_DIR/vendor
+docker run --name acdh-repo -p 80:8080 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/docroot/vendor -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/acdh-repo
 ```
 
-### Adjusting the config.yaml
+### Adjusting the config.yaml and/or composer.json
 
-Just mount it as *a volume* by adding `-v /path/to/config.yaml:/home/www-data/config.yaml`
+Just mount them as *a volume* by adding `-v /path/to/config.yaml:/home/www-data/config/config.yaml` and/or `-v /path/to/composer.json:/home/www-data/config/composer.json` do the `docker run` command.
 
 ## Deploying at ACDH
 
