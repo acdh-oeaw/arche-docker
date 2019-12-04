@@ -1,15 +1,15 @@
 from ubuntu:disco
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && \
+RUN apt update  && \
     apt full-upgrade -y && \
     apt install -y locales
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en
 RUN locale-gen en_US.UTF-8 && \
-    apt install -y supervisor git apache2 apache2-utils links curl vim locales libapache2-mod-php php-cli php-pgsql php-zip php-recode php-readline php-json php-curl php-intl php-mbstring php-yaml php-bcmath php-dom composer openjdk-8-jre-headless postgresql && \
+    apt install -y supervisor git apache2 apache2-utils links curl vim locales libapache2-mod-php php-cli php-pgsql php-zip php-recode php-readline php-json php-curl php-intl php-mbstring php-yaml php-bcmath php-dom composer openjdk-8-jre-headless postgresql authbind && \
     a2enmod rewrite && \
+    touch /etc/authbind/byport/80 && chmod 777 /etc/authbind/byport/80 && \
     sed -i -e 's/StartServers.*/StartServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
     sed -i -e 's/MinSpareServers.*/MinSpareServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
-    sed -i -e 's/Listen 80/Listen 8080/g' /etc/apache2/ports.conf && \
     sed -i -e 's|APACHE_LOG_DIR=.*|APACHE_LOG_DIR=/home/www-data/log|g' /etc/apache2/envvars && \
     mkdir -p /home/www-data/tika && \
     curl http://mirror.klaus-uwe.me/apache/tika/tika-server-1.22.jar > /home/www-data/tika/tika-server.jar
