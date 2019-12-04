@@ -28,4 +28,3 @@ VOLUME /home/www-data/tmp
 VOLUME /home/www-data/log
 VOLUME /home/www-data/postgresql
 VOLUME /home/www-data/docroot/vendor
-
