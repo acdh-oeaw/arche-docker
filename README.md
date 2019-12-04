@@ -55,10 +55,16 @@ mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor share
 ```
 3. Prepare the Dockerfile
 ```bash
-echo -e "FROM zozlak/acdh-repo\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
+echo -e "FROM zozlak/acdh-repo:arche\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
 ```
-5. Run `docker-manage`
 
-6. Adjust the `shares/config/config.yaml` (especially set the `urlBase` to `https://ServerNameYouSetInTheConfig.json`) and/or `shares/config/composer.json`.
+4. Download default `composer.json` and `config.yaml`
+```bash
+curl https://github.com/zozlak/acdh-repo-docker/raw/arche/root/home/www-data/config/composer.json > shares/config/composer.json
+curl https://github.com/zozlak/acdh-repo-docker/raw/arche/root/home/www-data/config/config.yaml > shares/config/config.yaml
+```
 
-7. Run `docker-manage` again (so all the changes you made in the previous point take effect).
+5. Inspect and adjust files downloaded in the previous point (especially set the `urlBase` to `https://ServerNameYouSetInTheConfig.json` in the `shares/config/config.yaml`).
+
+6. Run `docker-manage`
+
