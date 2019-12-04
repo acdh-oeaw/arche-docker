@@ -5,7 +5,7 @@
 ### Quick & dirty
 
 ```bash
-docker run --name acdh-repo -p 80:8080 -d zozlak/acdh-repo
+docker run --name acdh-repo -p 80:80 -d zozlak/acdh-repo
 ```
 
 ### With data directories mounted in host
