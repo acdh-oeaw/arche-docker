@@ -8,6 +8,14 @@
 docker run --name acdh-repo -p 80:80 -d zozlak/acdh-repo
 ```
 
+#### With ARCHE ontology and doorkeeper
+
+Just use the docker image with tag `arche`:
+
+```bash
+docker run --name acdh-repo -p 80:80 -d zozlak/acdh-repo:arche
+```
+
 ### With data directories mounted in host
 
 In this setup all the data are stored in a given host location and all the components are running under invoking user priviledges.
