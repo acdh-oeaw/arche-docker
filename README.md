@@ -23,7 +23,7 @@ In this setup all the data are stored in a given host location and all the compo
 ```bash
 VOLUMES_DIR=/absolute/path/to/data/location
 mkdir -p $VOLUMES_DIR/data $VOLUMES_DIR/tmp $VOLUMES_DIR/postgresql $VOLUMES_DIR/log $VOLUMES_DIR/vendor
-docker run --name acdh-repo -p 80:8080 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/docroot/vendor -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/acdh-repo
+docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/docroot/vendor -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/acdh-repo
 ```
 
 ### Adjusting the config.yaml and/or composer.json
@@ -45,7 +45,7 @@ A sample deployment putting all the persistent storage into the `shares` directo
     "ServerName":"test.localhost",
     "UserName":"www-data",
     "GroupName":"www-data",
-    "Ports": {"Host":0, "Guest":8080, "Type":"HTTP"},
+    "Ports": {"Host":0, "Guest":80, "Type":"HTTP"},
     "Mounts": [
       {"Host":"shares/data", "Guest":"/home/www-data/data", "Rights":"rw"},
       {"Host":"shares/tmp", "Guest":"/home/www-data/tmp", "Rights":"rw"},
