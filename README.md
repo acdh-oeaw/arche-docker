@@ -51,7 +51,7 @@ A sample deployment putting all the persistent storage into the `shares` directo
       {"Host":"shares/tmp", "Guest":"/home/www-data/tmp", "Rights":"rw"},
       {"Host":"shares/postgresql", "Guest":"/home/www-data/postgresql", "Rights":"rw"},
       {"Host":"shares/log", "Guest":"/home/www-data/log", "Rights":"rw"},
-      {"Host":"shares/vendor", "Guest":"/home/www-data/acdh-repo/vendor", "Rights":"rw"},
+      {"Host":"shares/vendor", "Guest":"/home/www-data/docroot/vendor", "Rights":"rw"},
       {"Host":"shares/config", "Guest":"/home/www-data/config", "Rights":"rw"}
     ]
   }
