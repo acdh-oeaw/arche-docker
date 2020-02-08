@@ -18,12 +18,25 @@ docker run --name acdh-repo -p 80:80 -d zozlak/acdh-repo:arche
 
 ### With data directories mounted in host
 
-In this setup all the data are stored in a given host location and all the components are running under invoking user priviledges.
+In this setup all the data are stored in a given host location which assures data persistency and gives you direct access to them.
 
 ```bash
 VOLUMES_DIR=/absolute/path/to/data/location
 mkdir -p $VOLUMES_DIR/data $VOLUMES_DIR/tmp $VOLUMES_DIR/postgresql $VOLUMES_DIR/log $VOLUMES_DIR/vendor
 docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/docroot/vendor -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/acdh-repo
+```
+
+### With data directories in Docker named volumes
+
+In this setup all the data are stored in a Docker named volumes which assures data persistency between Docker container runs.
+
+It doesn't allow you to inspect data directly on the host machine but integrates with Docker volumes which may be a selling point when you run it in a cloud environment (e.g. your cloud may provide such Docker volumes features like automated backups, migration between VMs, high availbility, etc.).
+
+```bash
+for i in data tmp postgresql log vendor config; do
+  docker volume create repo-$i
+done
+docker run --name acdh-repo -p 80:80 --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/docroot/vendor --mount source=repo-config,destination=/home/www-data/config -d zozlak/acdh-repo
 ```
 
 ### Adjusting the config.yaml and/or composer.json

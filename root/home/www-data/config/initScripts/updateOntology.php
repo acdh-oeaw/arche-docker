@@ -12,7 +12,6 @@ use acdhOeaw\acdhRepoLib\exception\NotFound;
 $cfgFile      = '/home/www-data/docroot/config.yaml';
 $ontologyFile = '/home/www-data/docroot/vendor/acdh-oeaw/arche-schema/acdh-schema.owl';
 
-sleep(10);
 $cfgFile2                  = $cfgFile . 'tmp';
 $cfg                       = yaml_parse_file($cfgFile);
 $cfg['composerLocation']   = '/home/www-data/docroot/vendor/autoload.php';
