@@ -1,6 +1,6 @@
 from ubuntu:disco
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update  && \
+RUN apt update && \
     apt full-upgrade -y && \
     apt install -y locales
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en
@@ -12,7 +12,7 @@ RUN locale-gen en_US.UTF-8 && \
     sed -i -e 's/MinSpareServers.*/MinSpareServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
     sed -i -e 's|APACHE_LOG_DIR=.*|APACHE_LOG_DIR=/home/www-data/log|g' /etc/apache2/envvars && \
     mkdir -p /home/www-data/tika && \
-    curl http://mirror.klaus-uwe.me/apache/tika/tika-server-1.22.jar > /home/www-data/tika/tika-server.jar
+    curl http://mirror.klaus-uwe.me/apache/tika/tika-server-1.23.jar > /home/www-data/tika/tika-server.jar
 CMD ["/home/www-data/run.sh"]
 COPY /root /
 EXPOSE 8080
