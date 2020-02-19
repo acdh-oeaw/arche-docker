@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Preserve host user UID and GID
 sed -i -E 's|www-data:(.*):/usr/sbin/nologin|www-data:\1:/bin/bash|g'  /etc/passwd
 if [ "$USER_GID" != "" ]; then
     groupmod -g $USER_GID www-data 
@@ -8,16 +10,40 @@ if [ "$USER_UID" != "" ]; then
     usermod -u $USER_UID www-data
     chown -R www-data /home/www-data
 fi
-chown www-data:www-data /var/run/apache2 /var/run/postgresql
+chown www-data:www-data /var/run/apache2 /var/run/postgresql /home/www-data/config
 
+# Configuration initialization
+if [ ! -d /home/www-data/config ] || [ -z "`ls -A /home/www-data/config`" ]; then
+    ls -al /home/www-data/config
+    if [ "$CFG_REPO_URL" == "" ]; then
+        CFG_REPO_URL="https://github.com/zozlak/acdh-repo-docker-config.git"
+    fi
+    echo "cloning $CFG_REPO_URL"
+    su -l www-data -c "git clone $CFG_REPO_URL /home/www-data/config"
+
+    if [ "$CFG_BRANCH" != "" ]; then
+        echo "changing branch to $CFG_BRANCH"
+        su -l www-data -c "cd /home/www-data/config && git checkout $CFG_BRANCH"
+    fi
+fi
+
+# Apache config from the configuration directory
+if [ -d /home/www-data/config/sites-available ]; then
+    rm -fR /etc/apache2/sites-available
+    ln -s /home/www-data/config/sites-available /etc/apache2/sites-available
+fi
+
+# Repo config from the configuration directory
 if [ ! -L /home/www-data/docroot/config.yaml ]; then
     su -l www-data -c 'ln -s /home/www-data/config/config.yaml /home/www-data/docroot/config.yaml'
     su -l www-data -c 'ln -s /home/www-data/config/composer.json /home/www-data/docroot/composer.json'
 fi
+# PHP libraries update
 su -l www-data -c 'cd /home/www-data/docroot && composer update'
 su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/index.php /home/www-data/docroot/index.php'
 su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/.htaccess /home/www-data/docroot/.htaccess'
 
+# Postgresql initialization
 if [ ! -f /home/www-data/postgresql/postgresql.conf ]; then
     su -l www-data -c '/usr/lib/postgresql/11/bin/initdb -D /home/www-data/postgresql --auth=ident -U www-data --locale en_US.UTF-8'
     su -l www-data -c '/usr/lib/postgresql/11/bin/pg_ctl start -D /home/www-data/postgresql -l /home/www-data/log/postgresql.log'
@@ -31,5 +57,6 @@ if [ ! -f /home/www-data/postgresql/postgresql.conf ]; then
 fi
 rm -f /home/www-data/postgresql/postmaster.pid
 
+# Running supervisord
 su -l www-data -c '/usr/bin/supervisord -c /home/www-data/supervisord.conf'
 

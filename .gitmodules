@@ -1,0 +1,3 @@
+[submodule "root/home/www-data/config"]
+	path = root/home/www-data/config
+	url = git@github.com:zozlak/acdh-repo-docker-config.git
