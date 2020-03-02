@@ -28,9 +28,9 @@ if [ ! -d /home/www-data/config ] || [ -z "`ls -A /home/www-data/config`" ]; the
 fi
 
 # Apache config from the configuration directory
-if [ -d /home/www-data/config/sites-available ]; then
-    rm -fR /etc/apache2/sites-available
-    ln -s /home/www-data/config/sites-available /etc/apache2/sites-available
+if [ -d /home/www-data/config/sites-enabled ]; then
+    rm -fR /etc/apache2/sites-enabled
+    ln -s /home/www-data/config/sites-enabled /etc/apache2/sites-enabled
 fi
 
 # Repo config from the configuration directory
@@ -43,20 +43,17 @@ su -l www-data -c 'cd /home/www-data/docroot && composer update'
 su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/index.php /home/www-data/docroot/index.php'
 su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/.htaccess /home/www-data/docroot/.htaccess'
 
-# Postgresql initialization
-if [ ! -f /home/www-data/postgresql/postgresql.conf ]; then
-    su -l www-data -c '/usr/lib/postgresql/11/bin/initdb -D /home/www-data/postgresql --auth=ident -U www-data --locale en_US.UTF-8'
-    su -l www-data -c '/usr/lib/postgresql/11/bin/pg_ctl start -D /home/www-data/postgresql -l /home/www-data/log/postgresql.log'
-    su -l www-data -c '/usr/bin/createdb www-data'
-    su -l www-data -c '/usr/bin/psql -f /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/build/db_schema.sql'
-    su -l www-data -c '/usr/bin/createuser repo'
-    su -l www-data -c '/usr/bin/createuser guest'
-    su -l www-data -c 'echo "GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC TO guest; GRANT USAGE ON SCHEMA public TO guest" | /usr/bin/psql'
-    su -l www-data -c 'echo "GRANT SELECT, INSERT, DELETE, UPDATE, TRUNCATE ON ALL TABLES IN SCHEMA PUBLIC TO repo; GRANT USAGE ON SCHEMA public TO repo" | /usr/bin/psql'
-    su -l www-data -c '/usr/lib/postgresql/11/bin/pg_ctl stop -D /home/www-data/postgresql'
-fi
+# User init scripts
 rm -f /home/www-data/postgresql/postmaster.pid
 
+for i in `ls -1 /home/www-data/config/run.d`; do
+    if [ -x "/home/www-data/config/run.d/$i" ]; then
+        echo -e "##########\n# Running /home/www-data/config/run.d/$i\n##########\n"
+        /home/www-data/config/run.d/$i
+    fi
+done
+
 # Running supervisord
+echo -e "##########\n# Starting supervisord\n##########\n"
 su -l www-data -c '/usr/bin/supervisord -c /home/www-data/supervisord.conf'
 
