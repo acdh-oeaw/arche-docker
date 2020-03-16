@@ -14,6 +14,7 @@ chown www-data:www-data /var/run/apache2 /var/run/postgresql /home/www-data/conf
 
 # Configuration initialization
 if [ ! -d /home/www-data/config ] || [ -z "`ls -A /home/www-data/config`" ]; then
+    echo -e "##########\n# Initializing configuration \n##########\n"
     ls -al /home/www-data/config
     if [ "$CFG_REPO_URL" == "" ]; then
         CFG_REPO_URL="https://github.com/zozlak/acdh-repo-docker-config.git"
@@ -39,7 +40,8 @@ if [ ! -L /home/www-data/docroot/config.yaml ]; then
     su -l www-data -c 'ln -s /home/www-data/config/composer.json /home/www-data/docroot/composer.json'
 fi
 # PHP libraries update
-su -l www-data -c 'cd /home/www-data/docroot && composer update'
+echo -e "##########\n# Updating PHP libraries\n##########\n"
+su -l www-data -c 'cd /home/www-data/docroot && composer update --no-dev'
 su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/index.php /home/www-data/docroot/index.php'
 su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/acdh-repo/.htaccess /home/www-data/docroot/.htaccess'
 
