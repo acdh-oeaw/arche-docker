@@ -26,7 +26,7 @@ for i in data tmp postgresql log vendor config; do
     mkdir -p $VOLUMES_DIR/$i
 done
 git clone https://github.com/acdh-oeaw/arche-docker-config.git $VOLUMES_DIR/config
-docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/docroot/vendor -v $VOLUMES_DIR/config:/home/www-data/config -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/arche
+docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/arche
 ```
 
 ### With data directories in Docker named volumes
@@ -41,7 +41,7 @@ It's probably the best choice for running in a container-as-service cloud (Porta
 for i in data tmp postgresql log vendor config; do
   docker volume create repo-$i
 done
-docker run --name acdh-repo -p 80:80 --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/docroot/vendor --mount source=repo-config,destination=/home/www-data/config -d zozlak/arche
+docker run --name acdh-repo -p 80:80 --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/vendor --mount source=repo-config,destination=/home/www-data/config -d zozlak/arche
 ```
 
 ## Adjusting the configuration

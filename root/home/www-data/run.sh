@@ -34,16 +34,18 @@ if [ -d /home/www-data/config/sites-enabled ]; then
     ln -s /home/www-data/config/sites-enabled /etc/apache2/sites-enabled
 fi
 
-# Repo config from the configuration directory
-if [ ! -L /home/www-data/docroot/config.yaml ]; then
-    su -l www-data -c 'ln -s /home/www-data/config/config.yaml /home/www-data/docroot/config.yaml'
-    su -l www-data -c 'ln -s /home/www-data/config/composer.json /home/www-data/docroot/composer.json'
+# Repo config and composer.json from the configuration directory
+if [ ! -L /home/www-data/docroot/api/config.yaml ]; then
+    su -l www-data -c 'ln -s /home/www-data/config/config.yaml   /home/www-data/docroot/api/config.yaml'
+    su -l www-data -c 'ln -s /home/www-data/vendor               /home/www-data/docroot/api/vendor'
+    su -l www-data -c 'ln -s /home/www-data/config/composer.json /home/www-data/composer.json'
 fi
+
 # PHP libraries update
 echo -e "##########\n# Updating PHP libraries\n##########\n"
-su -l www-data -c 'cd /home/www-data/docroot && composer update --no-dev'
-su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/arche-core/index.php /home/www-data/docroot/index.php'
-su -l www-data -c 'cp /home/www-data/docroot/vendor/acdh-oeaw/arche-core/.htaccess /home/www-data/docroot/.htaccess'
+su -l www-data -c 'cd /home/www-data && composer update --no-dev'
+su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/index.php /home/www-data/docroot/api/index.php'
+su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/.htaccess /home/www-data/docroot/api/.htaccess'
 
 # User init scripts
 rm -f /home/www-data/postgresql/postmaster.pid
