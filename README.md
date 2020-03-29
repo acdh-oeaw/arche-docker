@@ -22,11 +22,11 @@ It's probably the best choice if you want to run it locally on your computer/ser
 
 ```bash
 VOLUMES_DIR=/absolute/path/to/data/location
-for i in data tmp postgresql log vendor config; do
+for i in data tmp postgresql log vendor config gui; do
     mkdir -p $VOLUMES_DIR/$i
 done
 git clone https://github.com/acdh-oeaw/arche-docker-config.git $VOLUMES_DIR/config
-docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/arche
+docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/arche
 ```
 
 ### With data directories in Docker named volumes
@@ -38,10 +38,10 @@ It doesn't allow you to inspect data directly on the host machine but integrates
 It's probably the best choice for running in a container-as-service cloud (Portainer, Kubernetes, etc.).
 
 ```bash
-for i in data tmp postgresql log vendor config; do
+for i in data tmp postgresql log vendor config gui; do
   docker volume create repo-$i
 done
-docker run --name acdh-repo -p 80:80 --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/vendor --mount source=repo-config,destination=/home/www-data/config -d zozlak/arche
+docker run --name acdh-repo -p 80:80 --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/vendor --mount source=repo-config,destination=/home/www-data/config --mount source=repo-gui,destination=/home/www-data/gui -d zozlak/arche
 ```
 
 ## Adjusting the configuration
@@ -86,15 +86,16 @@ A sample deployment putting all the persistent storage into the `shares` directo
       {"Host":"shares/tmp", "Guest":"/home/www-data/tmp", "Rights":"rw"},
       {"Host":"shares/postgresql", "Guest":"/home/www-data/postgresql", "Rights":"rw"},
       {"Host":"shares/log", "Guest":"/home/www-data/log", "Rights":"rw"},
-      {"Host":"shares/vendor", "Guest":"/home/www-data/docroot/vendor", "Rights":"rw"},
-      {"Host":"shares/config", "Guest":"/home/www-data/config", "Rights":"rw"}
+      {"Host":"shares/vendor", "Guest":"/home/www-data/vendor", "Rights":"rw"},
+      {"Host":"shares/config", "Guest":"/home/www-data/config", "Rights":"rw"},
+      {"Host":"shares/drupal", "Guest":"/home/www-data/gui", "Rights":"rw"}
     ]
   }
 ]
 ```
 2. Prepare directories for persistent storage
 ```bash
-mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker shares/config
+mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor shares/docker shares/config shares/drupal
 ```
 3. Prepare the Dockerfile
 ```bash
