@@ -15,7 +15,7 @@ RUN locale-gen en_US.UTF-8 && \
     curl http://mirror.klaus-uwe.me/apache/tika/tika-server-1.24.jar > /home/www-data/tika/tika-server.jar
 CMD ["/home/www-data/run.sh"]
 COPY /root /
-EXPOSE 8080
+EXPOSE 80
 RUN mkdir -p /home/www-data/data /home/www-data/log /home/www-data/tmp /home/www-data/postgresql /home/www-data/docroot/api /home/www-data/vendor && \
     chown -R www-data:www-data /home/www-data && \
     chmod -R go-rwx /home/www-data && \
