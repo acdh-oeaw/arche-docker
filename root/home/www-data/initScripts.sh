@@ -10,4 +10,4 @@ for i in `ls -1 /home/www-data/config/initScripts`; do
         /home/www-data/config/initScripts/$i
     fi
 done
-
+echo -e "##########\n# INIT SCRIPTS ENDED\n##########\n"
