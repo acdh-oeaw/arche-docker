@@ -5,13 +5,13 @@
 ### Quick & dirty
 
 ```bash
-docker run --name acdh-repo -p 80:80 -d zozlak/arche
+docker run --name acdh-repo -p 80:80 -d acdhch/arche
 ```
 
 #### With ARCHE doorkeeper, ontology, etc.
 
 ```bash
-docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d zozlak/arche
+docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d acdhch/arche
 ```
 
 ### With data directories mounted in host
@@ -26,7 +26,7 @@ for i in data tmp postgresql log vendor config gui; do
     mkdir -p $VOLUMES_DIR/$i
 done
 git clone https://github.com/acdh-oeaw/arche-docker-config.git $VOLUMES_DIR/config
-docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -d zozlak/arche
+docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -d acdhch/arche
 ```
 
 ### With data directories in Docker named volumes
@@ -41,7 +41,7 @@ It's probably the best choice for running in a container-as-service cloud (Porta
 for i in data tmp postgresql log vendor config gui; do
   docker volume create repo-$i
 done
-docker run --name acdh-repo -p 80:80 --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/vendor --mount source=repo-config,destination=/home/www-data/config --mount source=repo-gui,destination=/home/www-data/gui -d zozlak/arche
+docker run --name acdh-repo -p 80:80 --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/vendor --mount source=repo-config,destination=/home/www-data/config --mount source=repo-gui,destination=/home/www-data/gui -d acdhch/arche
 ```
 
 ## Adjusting the configuration
@@ -99,7 +99,7 @@ mkdir -p shares/data shares/tmp shares/postgresql shares/log shares/vendor share
 ```
 3. Prepare the Dockerfile
 ```bash
-echo -e "FROM zozlak/arche\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
+echo -e "FROM acdhch/arche\nMAINTAINER Mateusz Żółtak <mzoltak@oeaw.ac.at>" > shares/docker/Dockerfile
 ```
 4. Download the configuration
 ```bash
