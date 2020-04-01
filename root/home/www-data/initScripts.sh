@@ -1,9 +1,9 @@
 #!/bin/bash
-while [ "`curl -i http://127.0.0.1/ 2>/dev/null | grep -c 'Server: Apache'`" != "1" ]; do
-    echo "Waiting for Apache to be up..."
+while [ "`curl -i http://127.0.0.1/api/transaction -X POST 2>/dev/null | grep -c '201 Created'`" != "1" ]; do
+    echo "Waiting for services to be up..."
     sleep 1
 done
-sleep 3
+sleep 1
 for i in `ls -1 /home/www-data/config/initScripts`; do
     if [ -x "/home/www-data/config/initScripts/$i" ]; then
         echo -e "##########\n# Running $i\n##########\n"
