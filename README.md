@@ -2,17 +2,13 @@
 
 ## Running
 
-### Quick & dirty
-
-```bash
-docker run --name acdh-repo -p 80:80 -d acdhch/arche
-```
-
-#### With ARCHE doorkeeper, ontology, etc.
+### Quick & dirty 10-minutes deployment
 
 ```bash
 docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d acdhch/arche
 ```
+
+You can also watch in at https://www.youtube.com/watch?v=MTCuBOcl64c
 
 ### With data directories mounted in host
 
