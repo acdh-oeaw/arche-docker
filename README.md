@@ -2,6 +2,11 @@
 
 ## Running
 
+General remarks (apply to all setups):
+
+* If you are using docker on linux you might need to use `sudo docker (...)` instead of `docker` depending on your system configuration.
+* Repository isn't ready just after the docker container start. You need to wait until it finishes the whole initialization process. At the first start it can take a few minutes. Please watch https://www.youtube.com/watch?v=MTCuBOcl64c to see how to check initialization progress.
+
 ### Quick & dirty 10-minutes deployment
 
 ```bash
@@ -17,11 +22,11 @@ In this setup all the data are stored in a given host location which assures dat
 It's probably the best choice if you want to run it locally on your computer/server or when you run it on a dedicated VM.
 
 ```bash
-VOLUMES_DIR=/absolute/path/to/data/location
-for i in data tmp postgresql log vendor config gui; do
+VOLUMES_DIR=absolute_path_on_your_computer_where_repo_data_are_to_be_stored
+git clone https://github.com/acdh-oeaw/arche-docker-config.git -b arche $VOLUMES_DIR/config
+for i in data tmp postgresql log vendor gui; do
     mkdir -p $VOLUMES_DIR/$i
 done
-git clone https://github.com/acdh-oeaw/arche-docker-config.git $VOLUMES_DIR/config
 docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -d acdhch/arche
 ```
 
@@ -37,7 +42,7 @@ It's probably the best choice for running in a container-as-service cloud (Porta
 for i in data tmp postgresql log vendor config gui; do
   docker volume create repo-$i
 done
-docker run --name acdh-repo -p 80:80 --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/vendor --mount source=repo-config,destination=/home/www-data/config --mount source=repo-gui,destination=/home/www-data/gui -d acdhch/arche
+docker run --name acdh-repo -p 80:80i -e CFG_BRANCH=arche --mount source=repo-data,destination=/home/www-data/data --mount source=repo-tmp,destination=/home/www-data/tmp --mount source=repo-postgresql,destination=/home/www-data/postgresql --mount source=repo-log,destination=/home/www-data/log --mount source=repo-vendor,destination=/home/www-data/vendor --mount source=repo-config,destination=/home/www-data/config --mount source=repo-gui,destination=/home/www-data/gui -d acdhch/arche
 ```
 
 ## Adjusting the configuration
@@ -46,12 +51,15 @@ This image provides only a runtime environment. Configuration (repository config
 
 You can:
 
-* either explicitely provide the desired configuration by mounting it from host machine folder/docker volume (`-v /path/to/my/config:/home/www-data/config` or `--mount source=configVolumeName,destination=/home/www-data/config` parameter added to the `docker run` command) 
-* or instruct the image to fetch it from a given git repository by setting the `CFG_REPO` and optionally `CFG_BRANCH` (if not set, `master` is assumed) environment variable (`-e CFG_REPO=gitRepoUrl` and `-e CFG_BRANCH=branchName` parameters added to the `docker run` command).
+* Either explicitely provide the desired configuration by mounting it from host machine folder/docker volume (`-v /path/to/my/config:/home/www-data/config` or `--mount source=configVolumeName,destination=/home/www-data/config` parameter added to the `docker run` command). An example of such setup is the _with data directories mounted in host_ deployment above.
+* Or instruct the image to fetch it from a given git repository by setting the `CFG_REPO` and optionally `CFG_BRANCH` (if not set, `master` is assumed) environment variable (`-e CFG_REPO=gitRepoUrl` and `-e CFG_BRANCH=branchName` parameters added to the `docker run` command). An example of such setup (using only `CFG_BRANCH` and keeping the default config repository) is the `Quick & dirty 10-minutes deployment` setup above.
 
 By default (if you don't use any of above-mentioned options) the branch `master` of the https://github.com/acdh-oeaw/arche-docker-config.git repository is used.
 
-Be aware that the git repository is checked out only if the `/home/www-data/config` directory inside the container is empty and is not automatically updated on the container run. As configuration updates may be dangerous they are not performed automatically.
+Be aware that:
+
+* The git repository is checked out only if the `/home/www-data/config` directory inside the container is empty.
+* The repository is not automatically updated on the container run. This is because configuration updates may be dangerous and an update should be a conscious decision of a maintainer.
 
 ### Developing your own configuration
 
