@@ -2,10 +2,10 @@
 
 ## Running
 
-General remarks (apply to all setups):
+**General remarks (apply to all setups):**
 
 * If you are using docker on linux you might need to use `sudo docker (...)` instead of `docker` depending on your system configuration.
-* Repository isn't ready just after the docker container start. You need to wait until it finishes the whole initialization process. At the first start it can take a few minutes. Please watch https://www.youtube.com/watch?v=MTCuBOcl64c to see how to check initialization progress.
+* Repository isn't ready just after the docker container start. You need to wait until it finishes the whole initialization process. At the first start it can take a few minutes. Please watch https://www.youtube.com/watch?v=MTCuBOcl64c to see how to check initialization progress (description in subtitles).
 
 ### Quick & dirty 10-minutes deployment
 
@@ -13,7 +13,7 @@ General remarks (apply to all setups):
 docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d acdhch/arche
 ```
 
-You can also watch in at https://www.youtube.com/watch?v=MTCuBOcl64c
+You can also watch in at https://www.youtube.com/watch?v=MTCuBOcl64c (description in subtitles).
 
 ### With data directories mounted in host
 
