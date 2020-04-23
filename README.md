@@ -15,7 +15,7 @@ docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d acdhch/arche
 
 You can also watch in at https://www.youtube.com/watch?v=b_sRHwNHYyM.
 
-### With data directories mounted in host
+### With data directories mounted from host
 
 In this setup all the data are stored in a given host location which assures data persistency and gives you direct access to them.
 
@@ -44,6 +44,8 @@ done
 docker volume create repo-postgresql
 docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v repo-postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -d acdhch/arche
 ```
+
+As I/O performance of directories mounted from a Windows host is poor you may prefer to mount from host only locations you want to introspect easily and leave other locations as Docker volumes.
 
 ### With data directories in Docker named volumes
 
