@@ -151,7 +151,7 @@ To be able to access the internal Postgresql database with external tools two ad
       ```
       local   all             all                                     peer
       ```
-    * Run `psql` inside the container (`docker exec -ti -u www-data acdh-repo psql`) and create a user with `CREATE USER user_name WITH PASSWORD 'strongPassword';`. Of course you must also grant user proper priviledges. If you absolutely trust him/her, you can simply make user an admin (`CREATE USER user_name WITH SUPERUSER  PASSWORD 'strongPassword';`). If you prefer granting him/her a read only access, use a separate GRANT commands - `GRANT USAGE ON SCHEMA public TO user_name; GRANT READ ON ALL TABLES IN SCHEMA public TO user_name;`.
+    * Run `psql` inside the container (`docker exec -ti -u www-data acdh-repo psql`) and create a user with `CREATE USER user_name WITH PASSWORD 'strongPassword';`. Of course you must also grant user proper priviledges. If you absolutely trust him/her, you can simply make user an admin (`CREATE USER user_name WITH SUPERUSER  PASSWORD 'strongPassword';`). If you prefer granting him/her a read only access, use a separate GRANT commands - `GRANT USAGE ON SCHEMA public TO user_name; GRANT SELECT ON ALL TABLES IN SCHEMA public TO user_name;`.
     * Restart the Docker container so changes take place - `docker stop acdh-repo` and `docker start acdh-repo`.
 
 Internal repository's database should be now accessible from your host system at `127.0.0.1:portYouChosen`.
