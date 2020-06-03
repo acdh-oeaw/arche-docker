@@ -56,6 +56,7 @@ if [ ! -e "$PG_HOST" ]; then
     PG_DBNAME=${PG_DBNAME:=postgres}
     echo "$PG_HOST:$PG_PORT:$PG_DBNAME:$PG_USER:PG_PSWD" >> /home/www-data/.pgpass
     PG_CONN="-h '$PG_HOST' -p $PG_PORT -U '$PG_USER' '$PG_DBNAME'"
+    export PG_CONN2="-h '$PG_HOST' -p $PG_PORT -U '$PG_USER'"
 fi
 export PG_CONN
 
