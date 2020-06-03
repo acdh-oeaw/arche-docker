@@ -47,6 +47,18 @@ su -l www-data -c 'cd /home/www-data && composer update --no-dev'
 su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/index.php /home/www-data/docroot/api/index.php'
 su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/.htaccess /home/www-data/docroot/api/.htaccess'
 
+# Database connection config
+PG_CONN=""
+su -l www-data -c 'echo "" > /home/www-data/.pgpass && chmod 600 /home/www-data/.pgpass'
+if [ ! -e "$PG_HOST" ]; then
+    PG_PORT=${PG_PORT:=5432}
+    PG_USER=${PG_USER:=postgres}
+    PG_DBNAME=${PG_DBNAME:=postgres}
+    echo "$PG_HOST:$PG_PORT:$PG_DBNAME:$PG_USER:PG_PSWD" >> /home/www-data/.pgpass
+    PG_CONN="-h '$PG_HOST' -p $PG_PORT -U '$PG_USER' '$PG_DBNAME'"
+fi
+export PG_CONN
+
 # User init scripts
 rm -f /home/www-data/postgresql/postmaster.pid
 
