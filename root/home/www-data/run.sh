@@ -48,17 +48,22 @@ su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/index.php /home
 su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/.htaccess /home/www-data/docroot/api/.htaccess'
 
 # Database connection config
-PG_CONN=""
-su -l www-data -c 'echo "" > /home/www-data/.pgpass && chmod 600 /home/www-data/.pgpass'
 if [ ! -z "$PG_HOST" ]; then
-    PG_PORT=${PG_PORT:=5432}
-    PG_USER=${PG_USER:=postgres}
-    PG_DBNAME=${PG_DBNAME:=postgres}
-    echo "$PG_HOST:$PG_PORT:$PG_DBNAME:$PG_USER:PG_PSWD" >> /home/www-data/.pgpass
-    PG_CONN="-h '$PG_HOST' -p $PG_PORT -U '$PG_USER' '$PG_DBNAME'"
-    export PG_CONN2="-h '$PG_HOST' -p $PG_PORT -U '$PG_USER'"
+    export PG_EXTERNAL=1
+else
+    PG_USER=www-data
+    PG_DBNAME=www-data
 fi
-export PG_CONN
+export PG_HOST=${PG_HOST:=127.0.0.1}
+export PG_PORT=${PG_PORT:=5432}
+export PG_USER=${PG_USER:=postgres}
+export PG_DBNAME=${PG_DBNAME:=postgres}
+export PG_CONN="-h $PG_HOST -p $PG_PORT -U $PG_USER $PG_DBNAME"
+su -l www-data -c 'echo "" > /home/www-data/.pgpass && chmod 600 /home/www-data/.pgpass'
+if [ ! -z "$PG_EXTERNAL" ]; then
+    echo "$PG_HOST:$PG_PORT:$PG_DBNAME:$PG_USER:$PG_PSWD" >> /home/www-data/.pgpass
+    echo "$PG_HOST:$PG_PORT:$PG_USER:$PG_USER:$PG_PSWD" >> /home/www-data/.pgpass
+fi
 
 # User init scripts
 rm -f /home/www-data/postgresql/postmaster.pid
