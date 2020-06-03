@@ -62,6 +62,19 @@ done
 docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -v repo-data:/home/www-data/data -v repo-tmp:/home/www-data/tmp -v repo-postgresql:/home/www-data/postgresql -v repo-log:/home/www-data/log -v repo-vendor:/home/www-data/vendor -v repo-config:/home/www-data/config -v repo-gui:/home/www-data/gui -d acdhch/arche
 ```
 
+### With Postgresql database on other host
+
+Just pass the Postgresql connection settings using `PG_HOST`, `PG_PORT` (defaults to `5432`), `PG_USER` (defaults to `postgres`), `PG_DBNAME` (defaults to `postgres`) and `PG_PSWD` environment variables while running the Docker container.
+
+A sample deployment using a default Postgresql Docker image combined with the _Quick & dirty 10-minutes deployment_ described above would go as follows:
+
+```bash
+docker run --name postgres -e POSTGRES_PASSWORD=mypassword -p 5432:5432 -d postgres
+docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d --link postgres -e PG_HOST=postgres -e PG_USER=postgres -e PG_PSWD=mypassword acdhch/arche
+```
+
+There is one more variable - `PG_USER_PREFIX` (defaults to an empty string) which allows to control database user names created during the repo initialization.
+
 ## Adjusting the configuration
 
 This image provides only a runtime environment. Configuration (repository config file, startup scripts, etc.) is assumed to be provided separately in the `/home/www-data/config` directory.
