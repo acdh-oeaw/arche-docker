@@ -50,7 +50,7 @@ su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/.htaccess /home
 # Database connection config
 PG_CONN=""
 su -l www-data -c 'echo "" > /home/www-data/.pgpass && chmod 600 /home/www-data/.pgpass'
-if [ ! -e "$PG_HOST" ]; then
+if [ ! -z "$PG_HOST" ]; then
     PG_PORT=${PG_PORT:=5432}
     PG_USER=${PG_USER:=postgres}
     PG_DBNAME=${PG_DBNAME:=postgres}
