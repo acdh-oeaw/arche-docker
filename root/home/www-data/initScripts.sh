@@ -1,4 +1,5 @@
 #!/bin/bash
+source /home/www-data/setDbVars.sh
 while [ "`curl -i http://127.0.0.1/api/transaction -X POST 2>/dev/null | grep -c '201 Created'`" != "1" ]; do
     echo "Waiting for services to be up..."
     sleep 1
