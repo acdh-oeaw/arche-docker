@@ -48,7 +48,17 @@ su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/index.php /home
 su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/.htaccess /home/www-data/docroot/api/.htaccess'
 
 # Database connection config
-source /home/www-data/setDbVars.sh
+if [ ! -z "$PG_HOST" ]; then
+    export PG_EXTERNAL=1
+else
+    PG_USER=www-data
+    PG_DBNAME=www-data
+fi
+export PG_HOST=${PG_HOST:=127.0.0.1}
+export PG_PORT=${PG_PORT:=5432}
+export PG_USER=${PG_USER:=postgres}
+export PG_DBNAME=${PG_DBNAME:=postgres}
+export PG_CONN="-h $PG_HOST -p $PG_PORT -U $PG_USER $PG_DBNAME"
 su -l www-data -c 'echo "" > /home/www-data/.pgpass && chmod 600 /home/www-data/.pgpass'
 if [ ! -z "$PG_EXTERNAL" ]; then
     echo "$PG_HOST:$PG_PORT:$PG_DBNAME:$PG_USER:$PG_PSWD" >> /home/www-data/.pgpass
@@ -67,5 +77,5 @@ done
 
 # Running supervisord
 echo -e "##########\n# Starting supervisord\n##########\n"
-su -l www-data -c '/usr/bin/supervisord -c /home/www-data/supervisord.conf'
+su -l www-data -w PG_HOST,PG_PORT,PG_USER,PG_DBNAME,PG_CONN,PG_EXTERNAL -c '/usr/bin/supervisord -c /home/www-data/supervisord.conf'
 
