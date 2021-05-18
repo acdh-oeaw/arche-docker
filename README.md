@@ -6,6 +6,7 @@
 
 * If you are using docker on linux you might need to use `sudo docker (...)` instead of `docker` depending on your system configuration.
 * Repository isn't ready just after the docker container start. You need to wait until it finishes the whole initialization process. At the first start it can take a few minutes. Please watch https://www.youtube.com/watch?v=b_sRHwNHYyM to see how to check initialization progress.
+* If you are mapping the container port 80 to different port in host, you must adjust the configuration (see separate chapter below) in a way `$.rest.baseUrl` is valid both from inside and outside of the container.
 
 ### Quick & dirty 10-minutes deployment
 
@@ -29,6 +30,10 @@ for i in data tmp postgresql log vendor gui; do
 done
 docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -d acdhch/arche
 ```
+
+#### On Fedora/RHEL/CentOs (or other selinux distro)
+
+Your default selinux config is likely to ban this setup. In such a case you should either adjust your selinux config or add `--privileged` switch to the `docker run`.
 
 #### On Windows
 
