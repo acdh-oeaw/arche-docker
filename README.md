@@ -11,7 +11,7 @@
 ### Quick & dirty 10-minutes deployment
 
 ```bash
-docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d acdhch/arche
+docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -e ADMIN_PSWD='myAdminPassword' -d acdhch/arche
 ```
 
 You can also watch in at https://www.youtube.com/watch?v=b_sRHwNHYyM.
@@ -28,7 +28,7 @@ git clone https://github.com/acdh-oeaw/arche-docker-config.git -b arche $VOLUMES
 for i in data tmp postgresql log vendor gui; do
     mkdir -p $VOLUMES_DIR/$i
 done
-docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -d acdhch/arche
+docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v $VOLUMES_DIR/postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -e ADMIN_PSWD='myAdminPassword' -d acdhch/arche
 ```
 
 #### On Fedora/RHEL/CentOs (or other selinux distro)
@@ -47,7 +47,7 @@ for i in data tmp log vendor gui; do
     mkdir -p $VOLUMES_DIR/$i
 done
 docker volume create repo-postgresql
-docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v repo-postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -d acdhch/arche
+docker run --name acdh-repo -p 80:80 -v $VOLUMES_DIR/data:/home/www-data/data -v $VOLUMES_DIR/tmp:/home/www-data/tmp -v repo-postgresql:/home/www-data/postgresql -v $VOLUMES_DIR/log:/home/www-data/log -v $VOLUMES_DIR/vendor:/home/www-data/vendor -v $VOLUMES_DIR/config:/home/www-data/config -v $VOLUMES_DIR/gui:/home/www-data/gui -e USER_UID=`id -u` -e USER_GID=`id -g` -e ADMIN_PSWD='myAdminPassword' -d acdhch/arche
 ```
 
 As I/O performance of directories mounted from a Windows host is poor you may prefer to mount from host only locations you want to introspect easily and leave other locations as Docker volumes.
@@ -64,7 +64,7 @@ It's probably the best choice for running in a container-as-service cloud (Porta
 for i in data tmp postgresql log vendor config gui; do
   docker volume create repo-$i
 done
-docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -v repo-data:/home/www-data/data -v repo-tmp:/home/www-data/tmp -v repo-postgresql:/home/www-data/postgresql -v repo-log:/home/www-data/log -v repo-vendor:/home/www-data/vendor -v repo-config:/home/www-data/config -v repo-gui:/home/www-data/gui -d acdhch/arche
+docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -v repo-data:/home/www-data/data -v repo-tmp:/home/www-data/tmp -v repo-postgresql:/home/www-data/postgresql -v repo-log:/home/www-data/log -v repo-vendor:/home/www-data/vendor -v repo-config:/home/www-data/config -v repo-gui:/home/www-data/gui -e ADMIN_PSWD='myAdminPassword' -d acdhch/arche
 ```
 
 ### With Postgresql database on other host
@@ -75,7 +75,7 @@ A sample deployment using a default Postgresql Docker image combined with the _Q
 
 ```bash
 docker run --name postgres -e POSTGRES_PASSWORD=mypassword -p 5432:5432 -d postgres
-docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d --link postgres -e PG_HOST=postgres -e PG_USER=postgres -e PG_PSWD=mypassword acdhch/arche
+docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d --link postgres -e PG_HOST=postgres -e PG_USER=postgres -e PG_PSWD=mypassword -e ADMIN_PSWD='myAdminPassword' acdhch/arche
 ```
 
 There is one more variable - `PG_USER_PREFIX` (defaults to an empty string) which allows to control database user names created during the repo initialization.
