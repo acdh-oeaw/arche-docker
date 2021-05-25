@@ -65,9 +65,10 @@ if [ ! -z "$PG_EXTERNAL" ]; then
     echo "$PG_HOST:$PG_PORT:$PG_USER:$PG_USER:$PG_PSWD" >> /home/www-data/.pgpass
 fi
 
-# User init scripts
+# Housekeeping
 rm -f /home/www-data/postgresql/postmaster.pid
 
+# User init scripts
 for i in `ls -1 /home/www-data/config/run.d`; do
     if [ -x "/home/www-data/config/run.d/$i" ]; then
         echo -e "##########\n# Running /home/www-data/config/run.d/$i\n##########\n"
@@ -77,5 +78,7 @@ done
 
 # Running supervisord
 echo -e "##########\n# Starting supervisord\n##########\n"
+declare -px > /home/www-data/env
+chown www-data:www-data /home/www-data/env
 su -l www-data -w PG_HOST,PG_PORT,PG_USER,PG_DBNAME,PG_CONN,PG_EXTERNAL -c '/usr/bin/supervisord -c /home/www-data/supervisord.conf'
 
