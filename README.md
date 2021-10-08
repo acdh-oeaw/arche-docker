@@ -80,6 +80,16 @@ docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d --link postgres -e P
 
 There is one more variable - `PG_USER_PREFIX` (defaults to an empty string) which allows to control database user names created during the repo initialization.
 
+### Summary of config environment variables
+
+| variable | description |
+| -------- | ----------- |
+| ADMIN_PSWD | Password of the arche-core admin user. It's important to note it's configuration's responsibility (see CFG_REPO_URL and CFG_BRANCH) to actually create the admin user account and use this password. This variable is listed here only to encourage a common way of passing this information to the configuration scripts. |
+| CFG_REPO_URL | Git clone URL of the configuration repository (see the *Adjusting the configuration* section below). If not specified, https://github.com/acdh-oeaw/arche-docker-config.git is assumed |
+| CFG_BRANCH | Configuration repository's branch to be used (see the *Adjusting the configuration* section below). If not specified, default repository's branch is used. |
+| PG_HOST, PG_PORT, PG_DBNAME, PG_USER, PG_PSWD | Postgresql connection parameters if an external Postgresql database should be used. If PG_HOST is not specified, a local Postgresql instance is used. Default values are `PG_HOST=""`, `PGPORT=5432`, `PG_DBNAME=""`, `PG_USER="www-data"`, `PG_PSWD="`. |
+| USER_UID, USER_GID | Desired UID and GID values of the user running the service. It's only important if you mount directories from host (see e.g. the *With data directories mounted from host* section above). In such a case you want to assure the service will be running using the same UID and GID as mounted directories owner to avoid problems with file access rights. If you need to use them, the right values are almost for sure `id -u` for USER_UID and `id -g` for USER_GID |
+
 ## Adjusting the configuration
 
 This image provides only a runtime environment. Configuration (repository config file, startup scripts, etc.) is assumed to be provided separately in the `/home/www-data/config` directory.
