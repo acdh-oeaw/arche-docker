@@ -14,6 +14,7 @@ RUN locale-gen en_US.UTF-8 && \
     apt update && \
     apt install -y supervisor git zip apache2 apache2-utils links curl vim locales libapache2-mod-php8.0 php8.0-cli php8.0-pgsql php8.0-zip php8.0-iconv php8.0-readline php8.0-curl php8.0-intl php8.0-mbstring php8.0-yaml php8.0-bcmath php8.0-dom php8.0-opcache php8.0-gd php8.0-sqlite3 php8.0-xml php8.0-xdebug openjdk-11-jre-headless postgresql authbind pv sqlite3 postgresql-14-postgis-3 && \
     a2enmod rewrite && \
+    ln -s /usr/lib/postgresql/14/bin/postgres /usr/bin/postgres && \
     touch /etc/authbind/byport/80 && chmod 777 /etc/authbind/byport/80 && \
     sed -i -e 's/StartServers.*/StartServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
     sed -i -e 's/MinSpareServers.*/MinSpareServers 1/g' /etc/apache2/mods-enabled/mpm_prefork.conf && \
