@@ -18,3 +18,7 @@ jobs:
         password: ${{ secrets.DOCKERHUBTOKEN }}
     - name: docker push
       run: docker push acdhch/arche:`cat tag`
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
