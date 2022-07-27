@@ -2,12 +2,12 @@ from ubuntu:focal
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     apt full-upgrade -y && \
-    apt install -y locales gnupg && \
+    apt install -y locales gnupg curl & \
     echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu/ focal main" >> /etc/apt/sources.list && \
     echo "deb http://ppa.launchpad.net/ondrej/apache2/ubuntu/ focal main" >> /etc/apt/sources.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
     echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-    curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+    curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en
 RUN locale-gen en_US.UTF-8 && \
     locale-gen de_DE.UTF-8 && \
