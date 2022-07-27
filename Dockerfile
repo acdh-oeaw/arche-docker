@@ -2,7 +2,7 @@ from ubuntu:focal
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     apt full-upgrade -y && \
-    apt install -y locales gnupg curl & \
+    apt install -y locales gnupg curl && \
     echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu/ focal main" >> /etc/apt/sources.list && \
     echo "deb http://ppa.launchpad.net/ondrej/apache2/ubuntu/ focal main" >> /etc/apt/sources.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
