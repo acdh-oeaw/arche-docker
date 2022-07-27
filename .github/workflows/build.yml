@@ -1,4 +1,4 @@
-name: phpunit
+name: build
 
 on:
   push: ~
