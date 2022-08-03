@@ -75,7 +75,7 @@ A sample deployment using a default Postgresql Docker image combined with the _Q
 
 ```bash
 docker run --name postgres -e POSTGRES_PASSWORD=mypassword -p 5432:5432 -d postgres
-docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d --link postgres -e PG_HOST=postgres -e PG_USER=postgres -e PG_PSWD=mypassword -e ADMIN_PSWD='myAdminPassword' -d acdhch/arche
+docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d --link postgres -e PG_HOST=postgres -e PG_USER=postgres -e PG_PSWD=mypassword -e ADMIN_PSWD='myAdminPassword' acdhch/arche
 ```
 
 There is one more variable - `PG_USER_PREFIX` (defaults to an empty string) which allows to control database user names created during the repo initialization.
@@ -113,6 +113,20 @@ The easiest way is to start by forking the https://github.com/acdh-oeaw/arche-do
 ### Rationale
 
 Separation of the runtime environment and the configuration makes it easier to manage both runtime environment updates and multiple configuration. This is because runtime environment updates are most of the time independent from particular configuration and can be simply pushed upstream while configuration is highly deployment-specific and changes in it shouldn't affect a common runtime environment.
+
+## Updating the database
+
+Newer version of this docker image may ship with newer version of postgresql.
+
+If you want to upgrade to the image version with the newer postgresql version:
+
+* **Before** upgrading the image go into the container and run `pg_dumpall -f /home/www-data/dump.sql` (it must be a location with a persistent storage!).
+* Stop the container.
+* Remove content of the directory/delete and recreate volume storying the Postgresql data.
+* Pull the new docker image.
+* Run the container.  
+  * if you are using configurations from the https://github.com/acdh-oeaw/arche-docker-config repository, they will automatically pick up the dump in the `/home/www-data/dump.sql` container directory;
+  * if you are using your own configuration which doesn't restore the dump automatically, go into the container and run `psql -f /home/www-data/dump.sql` and restart the container.
 
 ## Deploying at ACDH
 
