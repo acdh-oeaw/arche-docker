@@ -7,6 +7,10 @@
 * If you are using docker on linux you might need to use `sudo docker (...)` instead of `docker` depending on your system configuration.
 * Repository isn't ready just after the docker container start. You need to wait until it finishes the whole initialization process. At the first start it can take a few minutes. Please watch https://www.youtube.com/watch?v=b_sRHwNHYyM to see how to check initialization progress.
 * If you are mapping the container port 80 to different port in host, you must adjust the configuration (see separate chapter below) in a way `$.rest.baseUrl` is valid both from inside and outside of the container.
+* If the container starts but you see a `getaddrinfo() thread failed to start` error in the logs, then it means your host machine is incompatible with the glibc version in the latest Ubuntu release. This can be addressed in few ways:
+  * If you are using Windows, update the docker engine to the latest release (e.g. no such problems were observed on Docker Desktop 4.11 while they were observed on Docker Desktop 3.1 and 2.x).
+  * If you are using old linux distro (e.g. CentOs 7), update to a newer one.
+  * Use `acdhcd/arche:focal` image instead of the `acdhch/arche` one.
 
 ### Quick & dirty 10-minutes deployment
 
