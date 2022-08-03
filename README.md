@@ -75,7 +75,7 @@ A sample deployment using a default Postgresql Docker image combined with the _Q
 
 ```bash
 docker run --name postgres -e POSTGRES_PASSWORD=mypassword -p 5432:5432 -d postgres
-docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d --link postgres -e PG_HOST=postgres -e PG_USER=postgres -e PG_PSWD=mypassword -e ADMIN_PSWD='myAdminPassword' acdhch/arche
+docker run --name acdh-repo -p 80:80 -e CFG_BRANCH=arche -d --link postgres -e PG_HOST=postgres -e PG_USER=postgres -e PG_PSWD=mypassword -e ADMIN_PSWD='myAdminPassword' -d acdhch/arche
 ```
 
 There is one more variable - `PG_USER_PREFIX` (defaults to an empty string) which allows to control database user names created during the repo initialization.
