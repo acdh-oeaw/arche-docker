@@ -30,7 +30,7 @@ EXPOSE 80
 RUN mkdir -p /home/www-data/data /home/www-data/log /home/www-data/tmp /home/www-data/postgresql /home/www-data/docroot/api /home/www-data/vendor && \
     chown -R www-data:www-data /home/www-data && \
     chmod -R go-rwx /home/www-data && \
-    usermod -d /home/www-data www-data
+    usermod -d /home/www-data www-data 
 WORKDIR /home/www-data
 VOLUME /home/www-data/config
 VOLUME /home/www-data/data
