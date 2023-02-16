@@ -60,6 +60,8 @@ if [ ! -z "$PG_HOST" ]; then
 else
     export PG_USER=www-data
     export PG_DBNAME=www-data
+    export PG_HOST=127.0.0.1
+    export PG_PORT=5432
     export PG_CONN="-U $PG_USER $PG_DBNAME"
 fi
 
