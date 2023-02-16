@@ -78,7 +78,7 @@ done
 
 # Running supervisord
 echo -e "##########\n# Starting supervisord\n##########\n"
-declare -px | grep -E '^declare -x PG_' > /home/www-data/env
+declare -px | grep -E '^declare -x (PG_|ADMIN_PSWD)' > /home/www-data/env
 chown www-data:www-data /home/www-data/env
 su -l www-data -w PG_HOST,PG_PORT,PG_USER,PG_DBNAME,PG_CONN,PG_EXTERNAL -c '/usr/bin/supervisord -c /home/www-data/supervisord.conf'
 
