@@ -18,7 +18,7 @@ RUN locale-gen en_US.UTF-8 && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     rm composer-setup.php && \
     mkdir -p /home/www-data/tika && \
-    curl https://archive.apache.org/dist/tika/2.4.1/tika-server-standard-2.4.1.jar > /home/www-data/tika/tika-server.jar
+    curl https://archive.apache.org/dist/tika/2.7.0/tika-server-standard-2.7.0.jar > /home/www-data/tika/tika-server.jar
 CMD ["/home/www-data/run.sh"]
 COPY /root /
 EXPOSE 80
