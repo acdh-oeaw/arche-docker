@@ -7,7 +7,7 @@ ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en
 RUN locale-gen en_US.UTF-8 && \
     locale-gen de_DE.UTF-8 && \
     apt update && \
-    apt install -y supervisor git zip apache2 apache2-utils links curl vim locales libapache2-mod-php php-cli php-pgsql php-zip php-iconv php-readline php-curl php-intl php-mbstring php-yaml php-bcmath php-dom php-opcache php-gd php-sqlite3 php-xml php-xdebug openjdk-11-jre-headless postgresql authbind pv sqlite3 postgresql-14-postgis-3 && \
+    apt install -y supervisor git zip apache2 apache2-utils links curl vim locales libapache2-mod-php php-cli php-pgsql php-zip php-iconv php-readline php-curl php-intl php-mbstring php-yaml php-bcmath php-dom php-opcache php-gd php-sqlite3 php-xml php-xdebug openjdk-17-jre-headless postgresql authbind pv sqlite3 postgresql-14-postgis-3 && \
     a2enmod rewrite && \
     ln -s /usr/lib/postgresql/14/bin/postgres /usr/bin/postgres && \
     touch /etc/authbind/byport/80 && chmod 777 /etc/authbind/byport/80 && \
