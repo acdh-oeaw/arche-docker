@@ -2,7 +2,7 @@ from ubuntu:focal
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     apt full-upgrade -y && \
-    apt install --no-install-recommends --no-install-suggests -y locales gnupg curl && \
+    apt install -y locales gnupg curl && \
     echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu/ focal main" >> /etc/apt/sources.list && \
     echo "deb http://ppa.launchpad.net/ondrej/apache2/ubuntu/ focal main" >> /etc/apt/sources.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
@@ -12,7 +12,8 @@ ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en
 RUN locale-gen en_US.UTF-8 && \
     locale-gen de_DE.UTF-8 && \
     apt update && \
-    apt install --no-install-recommends --no-install-suggests -y supervisor git zip apache2 apache2-utils links curl vim locales libapache2-mod-php8.1 php8.1-cli php8.1-pgsql php8.1-zip php8.1-iconv php8.1-readline php8.1-curl php8.1-intl php8.1-mbstring php8.1-yaml php8.1-bcmath php8.1-dom php8.1-opcache php8.1-gd php8.1-sqlite3 php8.1-xml php8.1-xdebug openjdk-17-jre-headless postgresql authbind pv sqlite3 postgresql-14-postgis-3 xterm && \
+    apt install -y supervisor git zip apache2 apache2-utils links curl vim locales libapache2-mod-php8.1 php8.1-cli php8.1-pgsql php8.1-zip php8.1-iconv php8.1-readline php8.1-curl php8.1-intl php8.1-mbstring php8.1-yaml php8.1-bcmath php8.1-dom php8.1-opcache php8.1-gd php8.1-sqlite3 php8.1-xml php8.1-xdebug openjdk-17-jre-headless postgresql authbind pv sqlite3 postgresql-14-postgis-3 && \
+    apt install --no-install-recommends --no-install-suggests -y xterm && \
     a2enmod rewrite && \
     ln -s /usr/lib/postgresql/14/bin/postgres /usr/bin/postgres && \
     touch /etc/authbind/byport/80 && chmod 777 /etc/authbind/byport/80 && \
