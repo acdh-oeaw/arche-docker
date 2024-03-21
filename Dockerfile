@@ -18,14 +18,14 @@ RUN locale-gen en_US.UTF-8 && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     rm composer-setup.php && \
     mkdir -p /home/www-data/tika && \
-    curl https://archive.apache.org/dist/tika/2.9.0/tika-server-standard-2.9.0.jar > /home/www-data/tika/tika-server.jar
+    curl https://archive.apache.org/dist/tika/2.9.1/tika-server-standard-2.9.1.jar > /home/www-data/tika/tika-server.jar
 CMD ["/home/www-data/run.sh"]
 COPY /root /
 EXPOSE 80
 RUN mkdir -p /home/www-data/data /home/www-data/log /home/www-data/tmp /home/www-data/postgresql /home/www-data/docroot/api /home/www-data/vendor && \
     chown -R www-data:www-data /home/www-data && \
     chmod -R go-rwx /home/www-data && \
-    usermod -d /home/www-data www-data
+    usermod -d /home/www-data -s /bin/bash www-data
 WORKDIR /home/www-data
 VOLUME /home/www-data/config
 VOLUME /home/www-data/data

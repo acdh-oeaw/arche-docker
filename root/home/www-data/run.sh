@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Preserve host user UID and GID
-sed -i -E 's|www-data:(.*):/usr/sbin/nologin|www-data:\1:/bin/bash|g'  /etc/passwd
 if [ "$USER_GID" != "" ]; then
     groupmod -g $USER_GID www-data 
     chgrp -R www-data /home/www-data
