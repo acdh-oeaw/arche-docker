@@ -1,1 +1,1 @@
-latest
+jammy
