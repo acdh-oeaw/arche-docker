@@ -1,6 +1,6 @@
 #!/bin/bash
 
-userdel -r 1000 > /dev/nul
+userdel -r ubuntu 2>&1 > /dev/null
 # Preserve host user UID and GID
 if [ "$USER_GID" != "" ]; then
     groupmod -g $USER_GID www-data &&\
