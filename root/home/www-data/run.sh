@@ -1,12 +1,13 @@
 #!/bin/bash
 
+userdel -r 1000 > /dev/nul
 # Preserve host user UID and GID
 if [ "$USER_GID" != "" ]; then
-    groupmod -g $USER_GID www-data 
+    groupmod -g $USER_GID www-data &&\
     chgrp -R www-data /home/www-data
 fi
 if [ "$USER_UID" != "" ]; then
-    usermod -u $USER_UID www-data
+    usermod -u $USER_UID www-data &&\
     chown -R www-data /home/www-data
 fi
 chown www-data:www-data /var/run/apache2 /var/run/postgresql /home/www-data/config
