@@ -13,6 +13,9 @@ fi
 chown www-data:www-data /var/run/apache2 /var/run/postgresql /home/www-data/config
 
 # Configuration initialization
+if [ "$http_proxy" != "" ] ; then
+    su -w http_proxy -l www-data -c "git config --global http.proxy '$http_proxy'"
+fi
 if [ ! -d /home/www-data/config ] || [ -z "`ls -A /home/www-data/config`" ]; then
     echo -e "##########\n# Initializing configuration \n##########\n"
     ls -al /home/www-data/config
@@ -43,7 +46,7 @@ fi
 
 # PHP libraries update
 echo -e "##########\n# Updating PHP libraries\n##########\n"
-su -l www-data -c 'cd /home/www-data && composer update --no-dev'
+su -w http_proxy,https_proxy -l www-data -c 'cd /home/www-data && composer update --no-dev'
 su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/index.php /home/www-data/docroot/api/index.php'
 su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/.htaccess /home/www-data/docroot/api/.htaccess'
 
