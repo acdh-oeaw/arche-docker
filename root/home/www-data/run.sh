@@ -15,6 +15,9 @@ chown www-data:www-data /var/run/apache2 /var/run/postgresql /home/www-data/conf
 # Configuration initialization
 if [ "$http_proxy" != "" ] ; then
     su -w http_proxy -l www-data -c "git config --global http.proxy '$http_proxy'"
+    echo "export http_proxy=$http_proxy" >> /etc/apache2/envvars
+    echo "export https_proxy=$https_proxy" >> /etc/apache2/envvars
+    echo "export no_proxy=$no_proxy" >> /etc/apache2/envvars
 fi
 if [ ! -d /home/www-data/config ] || [ -z "`ls -A /home/www-data/config`" ]; then
     echo -e "##########\n# Initializing configuration \n##########\n"
