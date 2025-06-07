@@ -54,7 +54,7 @@ su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/index.php /home
 su -l www-data -c 'cp /home/www-data/vendor/acdh-oeaw/arche-core/.htaccess /home/www-data/docroot/api/.htaccess'
 
 # Database connection config
-su -l www-data -c 'echo "" > /home/www-data/.pgpass && chmod 600 /home/www-data/.pgpass'
+su -l www-data -c 'echo -n "" > /home/www-data/.pgpass && chmod 600 /home/www-data/.pgpass'
 if [ ! -z "$PG_HOST" ]; then
     export PG_EXTERNAL=1
     export PG_USER=${PG_USER:=postgres}
