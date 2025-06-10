@@ -47,6 +47,11 @@ if [ ! -L /home/www-data/docroot/api/config.yaml ]; then
     su -l www-data -c 'ln -s /home/www-data/config/composer.json /home/www-data/composer.json'
 fi
 
+# Timezone
+if [ "$TZ" != "" ] ; then
+    sed -i -E "s|.*date[.]timezone =.*|date.timezone = '$TZ'|" /etc/php/*/*/php.ini
+fi
+
 # PHP libraries update
 echo -e "##########\n# Updating PHP libraries\n##########\n"
 su -w http_proxy,https_proxy -l www-data -c 'cd /home/www-data && composer update --no-dev'
