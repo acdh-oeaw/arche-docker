@@ -1,4 +1,4 @@
-from ubuntu:resolute
+FROM ubuntu:resolute
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     apt full-upgrade -y && \
